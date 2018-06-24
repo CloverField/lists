@@ -20,21 +20,27 @@ impl List {
     }
 
     pub fn push(&mut self, elem: i32) {
-        let _new_node = Box::new(Node {
+        let new_node = Box::new(Node {
             elem: elem,
             next: mem::replace(&mut self.head, Link::Empty),
         });
     }
-    
+
     pub fn pop(&mut self) -> Option<i32> {
-        match self.head {
-            Link::Empty => {
-                //TODO
+        match mem::replace(&mut self.head, Link::Empty) {
+            Link::Empty => None,
+            Link::More(boxed_node) => {
+                let node = *boxed_node;
+                self.head = node.next;
+                Some(node.elem)
             }
-            Link::More(ref _node) => {
-                //TODO
-            }
-        };
-        unimplemented!()
+        }
+    }
+}
+
+mod test {
+    #[test]
+    fn basics() {
+
     }
 }
